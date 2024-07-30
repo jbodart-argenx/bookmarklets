@@ -19,12 +19,19 @@ function convertBookmarklet(inputFile, outputFile, preserveNames = true) {
         minifiedCode = minifiedCode.replace(/\s*([{};,:()=])\s*/g, '$1');
         // Ensure space after certain keywords
         minifiedCode = minifiedCode.replace(/\b(function|if|else|for|while|switch|case|return|let|const|var)\s+/g, '$1 ');
-    } else {
+    } 
+    if (! preserveNames || minifiedCode.length > 2000) {
         minifiedCode = uglifyJS.minify(jsCode).code;
     }
-    
+
     // URL-encode the minified JavaScript code
     const bookmarkletCode = 'javascript:' + querystring.escape(minifiedCode);
+
+    if (bookmarkletCode.length > 2000) {
+        console.warn(`❌	Bookmarklet minified code length ${bookmarkletCode.length} will not be supported by all browsers!`)
+    } else {
+        console.log(`✅ Bookmarklet minified code length ${bookmarkletCode.length} should be supported by all browsers.`)
+    }
 
     // Write the minified bookmarklet code to the output file
     fs.writeFileSync(outputFile, bookmarkletCode, 'utf8');
