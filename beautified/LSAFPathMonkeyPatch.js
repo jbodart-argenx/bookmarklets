@@ -1,17 +1,26 @@
 
 (function() {
     const iDoc = document.getElementById("sasLSAF_iframe").contentWindow.document,
-    inputField = iDoc.querySelector('#HLS_LSAF_REPOSITORY--navLinkInput-inner');
-    if (inputField) {
-        var originalValueSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-        Object.defineProperty(inputField, 'value', {
-            set: function(value) {
-                console.log('Input value changed programmatically:', value);
-                originalValueSetter.call(this, value);
+    locs = ["REPOSITORY", "WORKSPACE"],
+    lastVal = ["", ""],
+    qs = locs.map(loc => iDoc.querySelector("#HLS_LSAF_" + loc + "--navLinkInput-inner"));
+    qs.forEach((inputField, ind) => {
+        if (inputField) {
+            const originalValueSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+            if (originalValueSetter && ! Object.getOwnPropertyDescriptor(inputField, 'value')) {
+                Object.defineProperty(inputField, 'value', {
+                    set: function(val) {
+                        if (lastVal[ind] !== val) console.log(`LSAF `+locs[ind]+` Path Input Field changed:`, val);
+                        lastVal[ind] = val;
+                        originalValueSetter.call(this, val);
+                    }
+                });
+                console.log(`Monkey Patch added to LSAF `+locs[ind]+` Input Field Setter.`);
+            } else {
+                console.log(`Monkey Patching LSAF `+locs[ind]+` Input Field Setter:`, 'skipped redefining non-configurable property.');
             }
-        });
-        console.log('Monkey Patch added, value:', inputField.value);
-    } else {
-        console.log('LSAF_REPOSITORY path input field not found.');
-    }
+        } else {
+            console.log(`LSAF `+locs[ind]+` Path Input Field not found.`);
+        }
+    })
 })();
