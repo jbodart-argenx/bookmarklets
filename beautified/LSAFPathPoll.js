@@ -2,7 +2,6 @@
 (function() {
     const iDoc = document.getElementById("sasLSAF_iframe").contentWindow.document,
     locs = ["REPOSITORY", "WORKSPACE"],
-    /*inputField = iDoc.querySelector('#HLS_LSAF_REPOSITORY--navLinkInput-inner'),*/
     qs = locs.map(loc => iDoc.querySelector("#HLS_LSAF_" + loc + "--navLinkInput-inner")),
     tp = locs.map(loc => iDoc.querySelector("#HLS_LSAF_" + loc + "--treePanel")),
     tc = locs.map(loc => iDoc.querySelector("#HLS_LSAF_" + loc + "--table-table")),
@@ -15,6 +14,7 @@
         if (!Array.isArray(myArray)) myArray = [];
         myArray = myArray.filter(el=>el!==val);
         myArray.push(val);
+        myArray = myArray.slice(-20);  // keep at most the last 20 elements of the array
         console.log(key+` :`, JSON.stringify(myArray));
         localStorage.setItem(key, JSON.stringify(myArray));
     },
@@ -22,10 +22,8 @@
         const val = inputField?.value;
         if (inputField) {
             if (val && lastVal[ind] !== val && (val === "/" || val.slice(-1) !== "/")) {
-                // console.log(`Polled ${locs[ind]} Input value changed:`, val);
                 fetch(wd[ind]+val, {method: "HEAD"})
                     .then(data=>{
-                        // console.log(wd[ind]+val+' fetch status:', data.status);
                         if (data.ok) {
                             addPath(locs[ind]+'_path', val);
                             curVal[ind] = val;
@@ -65,29 +63,6 @@
         console.log(`Enter event listener added to LSAF `+locs[ind]+` Table Contents.`);
     });
     qs.forEach((inputField, ind) => {
-        /*setInterval(
-            () => {
-                chkIF(inputField, ind);
-            }
-            // function() {
-            //     const val = inputField?.value;
-            //     if (inputField) {
-            //         if (val && lastVal[ind] !== val && (val === "/" || val.slice(-1) !== "/")) {
-            //             // console.log(`Polled ${locs[ind]} Input value changed:`, val);
-            //             fetch(wd[ind]+val, {method: "HEAD"})
-            //                 .then(data=>{
-            //                     // console.log(wd[ind]+val+' fetch status:', data.status);
-            //                     if (data.ok) {
-            //                         addPath(locs[ind]+'_path', val);
-            //                         curVal[ind] = val;
-            //                     }
-            //                 })
-            //                 .catch(e=>{console.log(e)});
-            //         }
-            //         lastVal[ind] = val;
-            //     }
-            // }
-        , 500);*/
         if (inputField) {
             inputField.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter') {
