@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "minify": "terser beautified/$npm_config_file.js --source-map url=\"$npm_config_file.min.js.map\" --output minified/$npm_config_file.min.js",
     "minify-LSAFPathPoll": "npm run minify --file=LSAFPathPoll",
-    "launch-chrome": "/System/Volumes/Data/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir=remote-debug-profile"
+    "launch-chrome": "/System/Volumes/Data/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir=remote-debug-profile",
+    "launch-edge": "/System/Volumes/Data/Applications/Microsoft\\ Edge.app/Contents/MacOS/Microsoft\\ Edge --remote-debugging-port=9222 --user-data-dir=remote-debug-profile"
   },
   "author": "",
   "license": "ISC",
