@@ -14,9 +14,11 @@
     console.log('otherLoc:', locs[1-selIdx], 'path:',  qs[1-selIdx]?.value);
     console.log('Switching to '+locs[1-selIdx]+' path: '+curr+' ...');
     icn[1-selIdx].click();
-    qs[1-selIdx].value = curr ;
-    qs[1-selIdx].dispatchEvent(keyboardEvent = new KeyboardEvent("keydown", 
+    setTimeout((() => {
+      qs[1-selIdx].value = curr ;
+      qs[1-selIdx].dispatchEvent(keyboardEvent = new KeyboardEvent("keydown", 
       { code: "Enter", key: "Enter", charCode: 13, keyCode: 13, view: window, bubbles: !0 }));
+    }), 200);
     setTimeout((() => {
       const e = iDoc.querySelectorAll(`.sapUiTreeNodeSelected[aria-selected="true"][id*="${locs[1-selIdx]}"]`);
       // console.log("sel", e);
