@@ -10,13 +10,13 @@
     lastVal = ['', ''],
     addPath = (key, val) => {
         if (!val) return;
-        let myArray = JSON.parse(localStorage.getItem(key)) || [];
+        let myArray = JSON.parse(sessionStorage.getItem(key)) || [];
         if (!Array.isArray(myArray)) myArray = [];
         myArray = myArray.filter(el=>el!==val);
         myArray.push(val);
         myArray = myArray.slice(-20);  // keep at most the last 20 elements of the array
         console.log(key+` :`, JSON.stringify(myArray));
-        localStorage.setItem(key, JSON.stringify(myArray));
+        sessionStorage.setItem(key, JSON.stringify(myArray));
     },
     chkIF = function(inputField, ind) {
         const val = inputField?.value;
@@ -39,7 +39,7 @@
         if (node) {
             node.addEventListener('click', (event) => {
                 setTimeout(() => {
-                    console.log('event:', event);
+                    // console.log('event:', event);
                     chkIF(inputField, ind);
                 }, 300);
             });
@@ -54,7 +54,7 @@
                     && event.target.closest("td").getAttribute("data-sap-ui-colid").endsWith('--nameColumn')
                 ) {
                     setTimeout(() => {
-                        console.log(`Name click event:`, event);
+                        // console.log(`Name click event:`, event);
                         chkIF(inputField, ind);
                     }, 300);
                 }
@@ -67,7 +67,7 @@
             inputField.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter') {
                     const val = inputField?.value;
-                    console.log('enter: val:', val);
+                    // console.log('enter: val:', val);
                     chkIF(inputField, ind);
                 }
             });
